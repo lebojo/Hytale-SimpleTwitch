@@ -62,6 +62,9 @@ gradlew.bat runServer
 ./gradlew runServer
 ```
 
+To run the server, you should add the `Server.jar` & `Assets.zip` in a `libs/` folder.
+*You can download it somewhere on internet, but you can copy the ones in your game folder*
+
 ## Contributing
 
 Contributions are welcome! Feel free to open issues or submit pull requests.
