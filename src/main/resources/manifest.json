@@ -1,0 +1,19 @@
+{
+  "Group": "SimpleTwitch",
+  "Name": "SimpleTwitch",
+  "Version": "1.0.0",
+  "Description": "A Hytale plugin template",
+  "Authors": [
+    {
+      "Name": "LeBojo",
+      "Email": "contact@lebojo.ch",
+      "Url": "https://www.lebojo.ch"
+    }
+  ],
+  "Website": "https://github.com/lebojo/simpletwitch",
+  "Main": "ch.lebojo.simpletwitch.SimpleTwitch",
+  "ServerVersion": "*",
+  "Dependencies": {},
+  "OptionalDependencies": {},
+  "DisabledByDefault": false
+}
