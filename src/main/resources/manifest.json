@@ -1,8 +1,8 @@
 {
   "Group": "SimpleTwitch",
   "Name": "SimpleTwitch",
-  "Version": "1.0.0",
-  "Description": "A Hytale plugin template",
+  "Version": "1.0.2",
+  "Description": "The simpliest way to connect your twitch chat to Hytale!",
   "Authors": [
     {
       "Name": "LeBojo",
@@ -10,7 +10,7 @@
       "Url": "https://www.lebojo.ch"
     }
   ],
-  "Website": "https://github.com/lebojo/simpletwitch",
+  "Website": "https://github.com/lebojo/Hytale-SimpleTwitch",
   "Main": "ch.lebojo.simpletwitch.SimpleTwitch",
   "ServerVersion": "*",
   "Dependencies": {},
