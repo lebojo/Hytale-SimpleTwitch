@@ -2,9 +2,10 @@ plugins {
     id("java-library")
     id("com.gradleup.shadow") version "9.3.1"
     id("run-hytale")
+    kotlin("jvm")
 }
 
-group = findProperty("pluginGroup") as String? ?: "com.example"
+group = findProperty("pluginGroup") as String? ?: "ch.lebojo"
 version = findProperty("pluginVersion") as String? ?: "1.0.0"
 description = findProperty("pluginDescription") as String? ?: "A Hytale plugin template"
 
@@ -29,6 +30,7 @@ dependencies {
     // Test dependencies
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation(kotlin("stdlib-jdk8"))
 }
 
 // Configure server testing
