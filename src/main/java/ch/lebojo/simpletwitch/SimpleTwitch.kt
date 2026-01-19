@@ -49,23 +49,21 @@ class SimpleTwitch(init: JavaPluginInit) : JavaPlugin(init) {
         val channelId = twitchClient!!.getHelix()
             .getUsers(configFile!!.accessToken, null, null)
             .execute()
-            .getUsers()
-            .get(0)
-            .getId()
+            .users[0]
+            .id
 
         twitchClient!!.getEventManager().onEvent<CustomRewardRedemptionAddEvent?>(
             CustomRewardRedemptionAddEvent::class.java,
             Consumer { event: CustomRewardRedemptionAddEvent? ->
-                val rewardTitle = event!!.getReward().getTitle()
+                val rewardTitle = event?.reward?.title ?: return@Consumer
                 if (rewardTitle != configFile!!.rewardName) {
                     return@Consumer
                 }
 
-                val message = event.getUserInput()
-                val sender = event.getUserName()
+                val message = event.userInput
+                val sender = event.userName
 
                 if (message == null || message.isEmpty()) {
-                    println("Message vide de " + sender)
                     return@Consumer
                 }
 
