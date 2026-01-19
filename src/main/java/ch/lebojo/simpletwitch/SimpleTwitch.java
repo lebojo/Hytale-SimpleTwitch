@@ -16,6 +16,8 @@ import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.Universe;
+import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.util.EventTitleUtil;
 
 import java.io.IOException;
@@ -30,35 +32,24 @@ import java.util.function.Function;
  * 
  * TODO: Implement your plugin logic here.
  * 
- * @author YourName
- * @version 1.0.0
+ * @author LeBojo
+ * @version 1.0.2
  */
 public class SimpleTwitch extends JavaPlugin {
 
-    private static SimpleTwitch instance;
     private TwitchClient twitchClient;
-    public static final List<PlayerRef> onlinePlayers = new ArrayList<>();
     public static MyConfig configFile;
 
     public SimpleTwitch(JavaPluginInit init) {
         super(init);
-        instance = this;
         setConfigJson();
 
-        System.out.println("[simpletwitch] Plugin loaded!");
+        System.out.println("[SimpleTwitch] Plugin loaded!");
     }
 
     @Override
     protected void setup() {
         super.setup();
-
-        getEventRegistry().register(PlayerConnectEvent.class, event -> {
-            onlinePlayers.add(event.getPlayerRef());
-        });
-
-        getEventRegistry().register(PlayerDisconnectEvent.class, event -> {
-            onlinePlayers.remove(event.getPlayerRef());
-        });
     }
 
     @Override
@@ -94,6 +85,8 @@ public class SimpleTwitch extends JavaPlugin {
                 System.out.println("Message vide de " + sender);
                 return;
             }
+
+            List<PlayerRef> onlinePlayers = Universe.get().getPlayers();
 
             for (PlayerRef player : onlinePlayers) {
                 EventTitleUtil.showEventTitleToPlayer(
