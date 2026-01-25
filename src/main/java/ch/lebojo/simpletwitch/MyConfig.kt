@@ -2,7 +2,7 @@ package ch.lebojo.simpletwitch
 
 class MyConfig {
     @JvmField
-    var accessToken: String = ""
+    var accessTokens: List<String> = ArrayList()
     @JvmField
     var rewardName: String = ""
 }

@@ -20,7 +20,6 @@ import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.function.Consumer
-import java.util.function.Function
 
 class SimpleTwitch(init: JavaPluginInit) : JavaPlugin(init) {
     private var twitchClient: TwitchClient? = null
@@ -38,37 +37,31 @@ class SimpleTwitch(init: JavaPluginInit) : JavaPlugin(init) {
     override fun start() {
         super.start()
 
+        if (configFile?.accessTokens.isNullOrEmpty()) {
+            println("[HytaleTwitch] Pas de tokens configurés !")
+            return
+        }
+
         twitchClient = TwitchClientBuilder.builder()
             .withEnableHelix(true)
             .withEnableEventSocket(true)
-            .withDefaultAuthToken(OAuth2Credential("twitch", configFile!!.accessToken))
+            .withDefaultAuthToken(OAuth2Credential("twitch", configFile!!.accessTokens[0]))
             .build()
 
-        val eventSocket = twitchClient!!.getEventSocket()
+        val eventSocket = twitchClient!!.eventSocket
 
-        val channelId = twitchClient!!.getHelix()
-            .getUsers(configFile!!.accessToken, null, null)
-            .execute()
-            .users[0]
-            .id
-
-        twitchClient!!.getEventManager().onEvent<CustomRewardRedemptionAddEvent?>(
+        twitchClient!!.eventManager.onEvent<CustomRewardRedemptionAddEvent?>(
             CustomRewardRedemptionAddEvent::class.java,
             Consumer { event: CustomRewardRedemptionAddEvent? ->
                 val rewardTitle = event?.reward?.title ?: return@Consumer
-                if (rewardTitle != configFile!!.rewardName) {
-                    return@Consumer
-                }
+                if (rewardTitle != configFile!!.rewardName) return@Consumer
 
                 val message = event.userInput
                 val sender = event.userName
 
-                if (message == null || message.isEmpty()) {
-                    return@Consumer
-                }
+                if (message.isNullOrEmpty()) return@Consumer
 
-                val onlinePlayers = Universe.get().getPlayers()
-                for (player in onlinePlayers) {
+                Universe.get().players.forEach { player ->
                     EventTitleUtil.showEventTitleToPlayer(
                         player,
                         Message.raw(message),
@@ -78,8 +71,23 @@ class SimpleTwitch(init: JavaPluginInit) : JavaPlugin(init) {
                 }
             })
 
-        eventSocket.register(SubscriptionTypes.CHANNEL_POINTS_CUSTOM_REWARD_REDEMPTION_ADD) { builder ->
-            builder.broadcasterUserId(channelId).build()
+        configFile!!.accessTokens.forEach { token ->
+            try {
+                val user = twitchClient!!.helix
+                    .getUsers(token, null, null)
+                    .execute()
+                    .users
+                    .firstOrNull()
+
+                if (user != null) {
+                    eventSocket.register(SubscriptionTypes.CHANNEL_POINTS_CUSTOM_REWARD_REDEMPTION_ADD) { builder ->
+                        builder.broadcasterUserId(user.id).build()
+                    }
+                    println("[HytaleTwitch] Listen active pour : ${user.displayName}")
+                }
+            } catch (e: Exception) {
+                System.err.println("[HytaleTwitch] Error token : ${e.message}")
+            }
         }
 
         println("[HytaleTwitch] Plugin enabled!")
