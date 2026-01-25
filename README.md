@@ -15,12 +15,12 @@ Run the server once. A HytaleTwitch folder should appear in your `/mods/` direct
 
 ```
 {
-  "accessToken": "",
+  "accessTokens": ["TokenChannel1", "TokenChannel2"],
   "rewardName": ""
 }
 ```
 
-*   **accessToken**: Input your token with the correct scopes ([generate one here](https://twitchtokengenerator.com/)).
+*   **accessTokens**: Input your tokens for each channels with the correct scopes ([generate one here](https://twitchtokengenerator.com/)).
 *   **rewardName**: Must match your Twitch reward name **EXACTLY**.
 
 ⚠️ Don't forget to enable user input for your Twitch reward, even though it won't be able to display any message in the game (obviously). ⚠️
