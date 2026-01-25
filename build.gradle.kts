@@ -6,8 +6,8 @@ plugins {
 }
 
 group = findProperty("pluginGroup") as String? ?: "ch.lebojo"
-version = findProperty("pluginVersion") as String? ?: "1.0.0"
-description = findProperty("pluginDescription") as String? ?: "A Hytale plugin template"
+version = findProperty("pluginVersion") as String? ?: "2.0.0"
+description = findProperty("pluginDescription") as String? ?: "The easiest way to integrate twitch into Hytale"
 
 repositories {
     mavenLocal()
